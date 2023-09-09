@@ -51,7 +51,7 @@ class ChatInputFieldProvider extends ChangeNotifier {
     required this.handleImageSelect,
   });
 
-  late SpeechToText speech;
+  SpeechToText speech = SpeechToText();
 
   /// animated button on tap
   void onAnimatedButtonTap() {
