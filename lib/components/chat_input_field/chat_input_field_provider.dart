@@ -74,6 +74,7 @@ class ChatInputFieldProvider extends ChangeNotifier {
       if (avail) {
         speech.listen(onResult: (value) {
           textString = value.recognizedWords;
+          print('handleRecordtextString ${textString}');
         });
       }
     } else {
