@@ -70,6 +70,7 @@ class ChatInputFieldProvider extends ChangeNotifier {
 
     if (permissionStatus.isGranted) {
       if (!isText) {
+        print('arun changes here');
         _stopWatchTimer.onStartTimer();
         _stopWatchTimer.rawTime.listen((value) {
           _recordTime = value;
