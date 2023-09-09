@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class ChatInputFieldProvider extends ChangeNotifier {
@@ -50,6 +51,8 @@ class ChatInputFieldProvider extends ChangeNotifier {
     required this.handleImageSelect,
   });
 
+  late SpeechToText speech;
+
   /// animated button on tap
   void onAnimatedButtonTap() {
     _formKey.currentState?.save();
@@ -63,6 +66,21 @@ class ChatInputFieldProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String textString = '';
+  void listen(bool listen) async {
+    if (listen) {
+      bool avail = await speech.initialize();
+      print('speech to text avail ${avail}');
+      if (avail) {
+        speech.listen(onResult: (value) {
+          textString = value.recognizedWords;
+        });
+      }
+    } else {
+      speech.stop();
+    }
+  }
+
   /// animated button on LongPress
   void onAnimatedButtonLongPress() async {
     // HapticFeedback.heavyImpact();
@@ -71,6 +89,7 @@ class ChatInputFieldProvider extends ChangeNotifier {
     if (permissionStatus.isGranted) {
       if (!isText) {
         print('arun changes here');
+        listen(true);
         _stopWatchTimer.onStartTimer();
         _stopWatchTimer.rawTime.listen((value) {
           _recordTime = value;
@@ -118,7 +137,10 @@ class ChatInputFieldProvider extends ChangeNotifier {
 
         onSlideToCancelRecord();
       } else {
+        listen(false);
+        print('textString ${textString}');
         final audioMessage = ChatMessage(
+          text: textString,
           isSender: true,
           chatMedia: ChatMedia(
             url: source,
