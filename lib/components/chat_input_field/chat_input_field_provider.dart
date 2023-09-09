@@ -90,7 +90,7 @@ class ChatInputFieldProvider extends ChangeNotifier {
     if (permissionStatus.isGranted) {
       if (!isText) {
         print('arun changes here');
-        listen(true);
+        //listen(true);
         _stopWatchTimer.onStartTimer();
         _stopWatchTimer.rawTime.listen((value) {
           _recordTime = value;
@@ -138,8 +138,8 @@ class ChatInputFieldProvider extends ChangeNotifier {
 
         onSlideToCancelRecord();
       } else {
-        listen(false);
-        print('textString ${textString}');
+        //listen(false);
+        print('audioMessage ${source}');
         final audioMessage = ChatMessage(
           text: textString,
           isSender: true,
@@ -168,6 +168,7 @@ class ChatInputFieldProvider extends ChangeNotifier {
       // path: 'aFullPath/myFile.m4a', // required
       bitRate: 128000, // by default
       // sampleRate: 44100, // by default
+      encoder: AudioEncoder.wav
     );
   }
 
